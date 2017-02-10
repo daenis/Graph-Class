@@ -1,4 +1,4 @@
-# Quadratic-Pattern-Recognition
+# Graph-Class
 JavaScript code for a Graph class. Graph objects possess two properties - x and y, which are to be assigned array values that contain x and y coordinates, respectively. The stipulation is that the program needs at least three sequential coordinates to properly execute methods and return mathematically correct values (ex: x = 3, x = 4, x = 5). 
 Note: Program operates under the quadratic equation model, f(x) = Ax^2 + Bx + C
 Methods:
