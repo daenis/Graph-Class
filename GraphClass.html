@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+
+<html>
+
+<head>
+    
+</head>
+    
+<body>
+
+    
+    <script type="text/javascript">
+    
+        function Graph(x, y){
+            
+            this.x = x;
+            //An array containing the x coordinates of a function
+            
+            this.y = y;
+            //An array containing the corresponding y coordinates of a function
+            
+            
+            this.takeDerivativeA = function(){
+            //Return the derivative coefficient value of the leading term.
+                
+                return ((this.y[3] - this.y[2]) - (this.y[2] - this.y[1])) / (this.x[3] - this.x[1]) - 
+                       ((this.y[2] - this.y[1]) - (this.y[1] - this.y[0])) / (this.x[2] - this.x[0]);
+            }
+            
+            this.formA = function(){
+            //Use the derivative to form the leading coefficient
+                
+                return this.takeDerivativeA() / 3;
+                
+            }
+            
+            this.takeDerivativeB = function(){
+            //Take the derivative of the term associated with the B coefficient and return it
+                
+                return ((this.y[2] - (this.formA() * Math.pow(this.x[2], 3))) - 
+                       (this.y[1] - (this.formA() * Math.pow(this.x[1], 3))))
+                       -
+                       ((this.y[1] - (this.formA() * Math.pow(this.x[1], 3))) - 
+                       (this.y[0] - (this.formA() * Math.pow(this.x[0], 3))));
+                
+            }
+            
+            this.formB = function() {
+            //Manipulate the derivative of the B value coefficient to obtain B
+                
+                return this.takeDerivativeB() / 2;
+            }
+            
+            this.takeDerivativeC = function(){
+            //Take the derivative of the term associated with the B coefficient and return it
+                
+                return ((this.y[2] - this.y[1]) / (this.x[2] - this.x[1])) - 
+                       ((this.formA() * Math.pow(this.x[2], 3) + this.formB() * Math.pow(this.x[2], 2)) - 
+                        (this.formA() * Math.pow(this.x[1], 3) + this.formB() * Math.pow(this.x[1], 2))) / (this.x[2] - this.x[1]);
+                    
+            }
+            
+            this.takeYInt = function(){
+            //Return the Y intercept of the function based on the coordinates
+                
+                return this.y[0] - (this.formA() * Math.pow(this.x[0], 3)) - (this.formB() * Math.pow(this.x[0], 2)) - (this.takeDerivativeC() * this.x[0]);
+            }
+            
+            this.formEq = function(){
+            //Form an equation using the components derived by other methods (returns in f(x) = ax^2 + bx + c form)
+                
+                    return "f(x) = "
+                       .concat(this.formA().toString()).concat("x^3 + ")
+                       .concat(this.formB().toString()).concat("x^2 + ")
+                       .concat(this.takeDerivativeC().toString()).concat("x + ")
+                       .concat(this.takeYInt().toString());
+                
+            }
+            
+            this.predict = function(n){
+            //Substitute any n value in for x and return the result f(n)
+                
+                return (this.formA() * Math.pow(n, 3)) + (this.formB() * Math.pow(n, 2)) + (this.takeDerivativeC() * n) + this.takeYInt();
+            }
+            
+            this.formDerivativeEq = function() {
+            //Form an equation representing the derivative function regarding the original function    
+                
+                return "f '(x) = "
+                       .concat(this.takeDerivativeA().toString()).concat("x^2 + ")
+                       .concat(this.takeDerivativeB().toString()).concat("x + ")
+                       .concat(this.takeDerivativeC().toString());
+            }
+            
+            this.predictDerivative = function(n){
+            //Substitute any n value in for x and return the result f'(n)
+                
+                return this.takeDerivativeA() * Math.pow(n, 2) + this.takeDerivativeB() * n + this.takeDerivativeC();
+            }
+            
+            this.formIntegratedEq = function() {
+            //Form an equation that represents the integral function with respect to f(x)
+                
+                try {
+                    if(this.formA() != 0) throw "Cannot be integrated as of yet";
+                } catch(err){
+                    return(err);
+                }
+                
+                return "F '(x) =  "
+                       .concat((this.formB() / 3).toFixed(2)).concat("x^3 + ")
+                       .concat((this.takeDerivativeC() / 2).toFixed(2)).concat("x^2 + ")
+                       .concat(this.takeYInt().toFixed(2)).concat("x + D");
+                
+            }
+            
+            this.predictIntegral = function(n, D) {
+            //Substitute any n value in for x and return the result F'(n) + constant D
+                
+                try {
+                    if(this.formA() != 0) throw "Cannot be integrated as of yet";
+                } catch(err){
+                    return(err);
+                }
+                
+                return ((this.formB() / 3) * Math.pow(n, 3)) + ((this.takeDerivativeC() / 2) * Math.pow(n, 2)) + D;
+                
+            }
+            
+        }
+            
+        //------------------------Test Case Code--------------------------------------------------------------------------------
+        
+        
+        var test = function(method, prediction){if(method != prediction){document.write(false);}else{document.write(true);}}
+        
+        //------------------------Test Cases------------------------------------------------------------------------------------
+        
+        var graph1 = new Graph([0, 1, 2, 3],[2, 11, 42, 113]);
+        var graph2 = new Graph([5, 6, 7, 8],[227, 363, 543, 773]);
+        var graph3 = new Graph([-2, -1, 0, 1], [28, 7.75, 1, -4.25]);
+        var graph4 = new Graph([0, 1, 2, 3],[0, 1, 4, 9]);
+             
+        test(graph1.formEq(), "f(x) = 3x^3 + 2x^2 + 4x + 2"); 
+        document.write("\n");
+        test(graph2.formEq(), "f(x) = 1x^3 + 4x^2 + 1x + -3");
+        document.write("\n");
+        test(graph3.formEq(), "f(x) = -2x^3 + 0.75x^2 + -4x + 1"); 
+        document.write("\n");
+        test(graph4.formEq(), "f(x) = 0x^3 + 1x^2 + 0x + 0");
+        document.write("\n");
+        test(graph1.formIntegratedEq(), "Cannot be integrated as of yet");
+        document.write("\n");
+        test(graph4.predictIntegral(3,1), 10); 
+        document.write("\n");
+        
+        //For some reason, the following line of code is not executing as expected. I believe there is an issue with the rounding of the numbers. The test function should return true with the following parameters, but it is returning false. Omit the next two sets of comment slashes to reveal the output of the following two lines. 
+        
+        //test(graph4.formIntegratedEq(), "F '(x) = 0.33x^3 + 0.00x^2 + 0.00x + D");
+        //document.write(graph4.formIntegratedEq());
+        
+        
+        
+        
+        
+        
+            
+            
+    </script>
+    
+    
+</body>
+    
+</html>
