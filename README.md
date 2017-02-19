@@ -1,9 +1,10 @@
 # Graph-Class
 JavaScript code for a Graph class. Graph objects possess two properties - x and y, which are to be assigned array values that contain x and y coordinates, respectively. The stipulation is that the program needs at least four sequential coordinates to properly execute methods and return mathematically correct values (ex: x = 3, x = 4, x = 5, x = 6). 
 Note: Program operates under the cubic equation model, f(x) = Ax^3 + Bx^2 + Cx + D
+Note: Test case doesn't execute as expected, further details commented within code.
 Methods:
 - takeDerivativeA() : Returns the derivative of the first term, led by coefficient A.
-- formLeading() : Returns the value of the leading coefficient.
+- formA() : Returns the value of the leading coefficient.
 - takeDerivativeB() : Returns the derivative of the second term, led by coefficient B. 
 - formB() : Returns the value of the coefficient B.
 - takeDerivativeC() : Returns the value of the coefficient C. This is the same as the derivative, as C is associated with the x term.
@@ -14,4 +15,7 @@ Methods:
 - formDerivativeEq() - Returns a string value representing the derivative of the original equation.
   ***Still needs optimization, much like the formEq() method***
 - predictDerivative(n) : Similar to the predict method. Return a value for f'(n).
-Future functionality will include integration methods, min / max detection methods and root detection methods. In addition, test cases will be provided with the class. 
+- formIntegralEq() - Returns a string value representing the integral function of the original equation.
+  ***Still needs optimization, much like the formEq() method***
+- predictIntegral(n, D) : Similar to the predict method. Return a value for f'(n) added to constant D.
+Future functionality will include min / max detection methods and root detection methods. 
